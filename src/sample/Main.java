@@ -37,8 +37,8 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Scanner sc = new Scanner(System.in);
-        HashMap<String, Integer> cus_info_to_colombo = new HashMap<String, Integer>();
-        HashMap<String, Integer> cus_info_to_badulla = new HashMap<String, Integer>();
+        HashMap<Integer,String> cus_info_to_colombo = new HashMap<Integer, String>();
+        HashMap<Integer,String> cus_info_to_badulla = new HashMap<Integer, String>();
 
         while (true) {
             System.out.println("Enter \"A\" to add a customer");
@@ -145,7 +145,7 @@ public class Main extends Application {
         int i = 0;
         System.exit(i);
     }
-    private void addcustomer(HashMap<String, Integer> cus_info) throws FileNotFoundException {
+    private void addcustomer(HashMap<Integer, String> cus_info) throws FileNotFoundException {
         ArrayList<Integer> seat_number = new ArrayList<Integer>();
 
         Stage primaryStage = new Stage();
@@ -192,50 +192,50 @@ public class Main extends Application {
             book.setLayoutY(700);
             book.setLayoutX(180);
             borderPane.setBottom(book);
-            button.setOnAction((e) -> {
-                if (button.isSelected()) {
-                    button.setStyle("-fx-background-color: red; -fx-text-fill:white");
-                    seat_number.add(Integer.valueOf(button.getId()));
-                    System.out.println(seat_number);
-                } else {
-                    seat_number.remove(Integer.valueOf(button.getId()));
-                    System.out.println(seat_number);
-                }
-            });
-
-            book.setOnAction(e -> {
-                Stage Popup = new Stage();
-
-                //Popup.initModality(Modality.APPLICATION_MODAL);
-                Popup.setTitle("Customer's_Info");
-
-                AnchorPane anchorPane = new AnchorPane();
-
-                TextField name = new TextField();
-                name.setLayoutX(250);
-                name.setLayoutY(330);
-                Button confirm = new Button("confirm");
-                // confirm.setAlignment(Pos.CENTER_RIGHT);
-
-
-                // flowPane.setAlignment(Pos.CENTER);
-                anchorPane.getChildren().addAll(confirm, name);
-
-
-                confirm.setOnAction(e1 -> {
-                    cus_info.put(name.getText(), cus_info.get(seat_number));
-                    System.out.println("Thanks for booking " + name.getText() + seat_number.getClass());
-                    Popup.close();
+                button.setOnAction((e) -> {
+                    if (button.isSelected()) {
+                        button.setStyle("-fx-background-color: red; -fx-text-fill:white");
+                        seat_number.add(Integer.valueOf(button.getId()));
+                        System.out.println(seat_number);
+                    } else {
+                        seat_number.remove(Integer.valueOf(button.getId()));
+                        System.out.println(seat_number);
+                    }
                 });
-                Scene scene2 = new Scene(anchorPane, 600, 550);
-                Popup.setScene(scene2);
-                Popup.showAndWait();
-            });
+
+                book.setOnAction(e -> {
+                    Stage Popup = new Stage();
+
+                    //Popup.initModality(Modality.APPLICATION_MODAL);
+                    Popup.setTitle("Customer's_Info");
+
+                    AnchorPane anchorPane = new AnchorPane();
+
+                    TextField name = new TextField();
+                    name.setLayoutX(250);
+                    name.setLayoutY(330);
+                    Button confirm = new Button("confirm");
+                    // confirm.setAlignment(Pos.CENTER_RIGHT);
 
 
+                    // flowPane.setAlignment(Pos.CENTER);
+                    anchorPane.getChildren().addAll(confirm, name);
 
 
-        }
+                    confirm.setOnAction(e1 -> {
+                        for (Integer i : seat_number) {
+                            cus_info.put(i, name.getText());
+                            Popup.close();
+                        }
+                    });
+                    Scene scene2 = new Scene(anchorPane, 600, 550);
+                    Popup.setScene(scene2);
+                    Popup.showAndWait();
+                });
+
+
+            }
+
 
         for (int a = 22; a <= 42; a++) {
             ToggleButton button1 = new ToggleButton("Seat" + a);
@@ -266,9 +266,11 @@ public class Main extends Application {
 
 
                 confirm1.setOnAction(e1 -> {
-                    cus_info.put(name1.getText(), Integer.parseInt(button1.getId()));
-                    System.out.println("Thanks for booking " + name1.getText() + button1.getId());
-                    Popup.close();
+                   for (Integer i: seat_number){
+                       cus_info.put(i, name1.getText());
+                       System.out.println("Thanks for booking" + name1.getText() + i);
+                   }
+                   Popup.close();
                 });
                 Scene scene2 = new Scene(flowPane, 600, 550);
                 Popup.setScene(scene2);
@@ -291,7 +293,7 @@ public class Main extends Application {
         primaryStage.showAndWait();
 
     }
-    private void viewAllSeats(HashMap<String, Integer> cus_info) {
+    private void viewAllSeats(HashMap<Integer,String> cus_info) {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Seats");
 
@@ -352,7 +354,7 @@ public class Main extends Application {
 
 
     }
-    private void viewEmptySeats(HashMap<String, Integer> cus_info) {
+    private void viewEmptySeats(HashMap<Integer,String> cus_info) {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("View Empty Seats");
         BorderPane borderPane = new BorderPane();
@@ -381,14 +383,14 @@ public class Main extends Application {
             if (cus_info.containsValue(Integer.parseInt(button1.getId()))) {
                 button1.setVisible(false);
 
-        }
+            }
         }
         Scene scene = new Scene(borderPane, 250, 700);
         primaryStage.setScene(scene);
         primaryStage.showAndWait();
 
     }
-    private void deleteBooking(HashMap<String,Integer> cus_info){
+        private void deleteBooking(HashMap<Integer,String> cus_info){
         Stage primaryStage = new Stage();
         primaryStage.setTitle("View Empty Seats");
         FlowPane flowPane = new FlowPane();
@@ -398,7 +400,7 @@ public class Main extends Application {
         Button enter = new Button("Enter");
         hBox.getChildren().addAll(name,enter);
         enter.setOnAction(e ->{
-            if(cus_info.containsKey(name.getText())) {
+            if(cus_info.containsValue(name.getText())) {
                 cus_info.remove(name.getText());
                 success();
             }else {
@@ -444,7 +446,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.showAndWait();
     }
-    private void findSeatByCusName(HashMap<String,Integer> cus_info){
+    private void findSeatByCusName(HashMap<Integer,String> cus_info){
         Stage stage = new Stage();
         stage.setTitle("Find Seat");
 
@@ -461,7 +463,7 @@ public class Main extends Application {
         anchorPane.getChildren().addAll(label,find,txt);
 
         find.setOnAction(e->{
-            if(cus_info.containsKey(txt.getText())){
+            if(cus_info.containsValue(txt.getText())){
                 System.out.println("You Have Booked Seats" + cus_info.get(txt.getText()));
             } else {
                 System.out.println("There are no seats assign to this name");
