@@ -1,30 +1,30 @@
 package sample;
 
-        import java.io.FileInputStream;
-        import java.lang.System;
+import java.io.FileInputStream;
+import java.lang.System;
 
-        import javafx.application.Application;
-        import javafx.geometry.Orientation;
-        import javafx.geometry.Pos;
-        import javafx.scene.Node;
-        import javafx.scene.Scene;
-        import javafx.scene.control.Button;
-        import javafx.scene.control.Label;
-        import javafx.scene.control.TextField;
-        import javafx.scene.control.ToggleButton;
-        import javafx.scene.image.Image;
-        import javafx.scene.image.ImageView;
-        import javafx.scene.layout.*;
-        import javafx.scene.text.Text;
-        import javafx.stage.Modality;
-        import javafx.stage.Stage;
-        import java.io.FileInputStream;
-        import java.io.FileNotFoundException;
+import javafx.application.Application;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.text.Text;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 
-        import java.util.ArrayList;
-        import java.util.BitSet;
-        import java.util.HashMap;
-        import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.BitSet;
+import java.util.HashMap;
+import java.util.Scanner;
 
 public class Main extends Application {
     int   no_seats = 42;
@@ -192,7 +192,7 @@ public class Main extends Application {
             book.setLayoutY(700);
             book.setLayoutX(180);
             borderPane.setBottom(book);
-            book.setOnAction((e) -> {
+            button.setOnAction((e) -> {
                 if (button.isSelected()) {
                     button.setStyle("-fx-background-color: red; -fx-text-fill:white");
                     seat_number.add(Integer.valueOf(button.getId()));
@@ -381,7 +381,7 @@ public class Main extends Application {
             if (cus_info.containsValue(Integer.parseInt(button1.getId()))) {
                 button1.setVisible(false);
 
-            }
+        }
         }
         Scene scene = new Scene(borderPane, 250, 700);
         primaryStage.setScene(scene);
@@ -467,9 +467,9 @@ public class Main extends Application {
                 System.out.println("There are no seats assign to this name");
             }
         });
-        Scene scene = new Scene(anchorPane,500,500);
-        stage.setScene(scene);
-        stage.showAndWait();
+      Scene scene = new Scene(anchorPane,500,500);
+      stage.setScene(scene);
+      stage.showAndWait();
 
     }
 }
