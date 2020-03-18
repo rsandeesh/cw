@@ -114,7 +114,9 @@ public class Main extends Application {
 
                     break;
                 case "F":
-                case "f":System.out.println("Enter 1 if your destination is Colombo");
+                case "f":
+
+                    System.out.println("Enter 1 if your destination is Colombo");
                     System.out.println("Enter 2 if your destination is Badulla");
                     System.out.print("Enter your option : ");
                     int user_input4 = sc.nextInt();
@@ -147,6 +149,8 @@ public class Main extends Application {
     }
     private void addcustomer(HashMap<Integer, String> cus_info) throws FileNotFoundException {
         ArrayList<Integer> seat_number = new ArrayList<Integer>();
+        ArrayList<String> cus_name = new ArrayList<String>();
+
 
         Stage primaryStage = new Stage();
         //primaryStage.setResizable(false);
@@ -221,6 +225,12 @@ public class Main extends Application {
                     Button confirm = new Button("confirm");
                     // confirm.setAlignment(Pos.CENTER_RIGHT);
 
+                    if(cus_name.contains(name.getText().toLowerCase())){
+                        cus_info.put(Integer.valueOf(button.getId()),name.getText().toLowerCase());
+                    }else{
+                        cus_info.put(Integer.valueOf(button.getId()),name.getText().toLowerCase());
+                        cus_name.add(name.getText().toLowerCase());
+                    }
 
                     // flowPane.setAlignment(Pos.CENTER);
                     anchorPane.getChildren().addAll(confirm, name);
@@ -460,6 +470,7 @@ public class Main extends Application {
         stage.showAndWait();
     }
     private void findSeatByCusName(HashMap<Integer,String> cus_info){
+        Scanner sc = new Scanner(System.in);
         Stage stage = new Stage();
         stage.setTitle("Find Seat");
 
@@ -476,10 +487,38 @@ public class Main extends Application {
         anchorPane.getChildren().addAll(label,find,txt);
 
         find.setOnAction(e->{
-            if(cus_info.containsValue(txt.getText())){
-                System.out.println("You Have Booked Seats" + cus_info.get(cus_info));
-            } else {
+            if(cus_info.isEmpty()){
                 System.out.println("There are no seats assign to this name");
+            }else{
+                System.out.println("Please enter the name that you've booked the seats");
+                String remove_seat_name = sc.next();
+                if(!cus_info.containsValue(remove_seat_name)){
+                    System.out.println("No seats booked under the name "+ remove_seat_name );
+                }else{
+                    System.out.println("You have booked these seats");
+                    if(cus_info.containsValue(remove_seat_name)){
+                        for(HashMap.Entry<Integer,String>entry: cus_info.entrySet()){
+                            if(remove_seat_name.equals(entry.getValue())){
+                                System.out.println(entry.getKey()+ " ");
+                            }
+                        }
+                        System.out.println("Which seat number do you want yo delete: ");
+                        while(!sc.hasNextInt()){
+                            System.out.println("Enter Integers! ");
+                            System.out.println("Which seat you want to delete:");
+                            sc.nextInt();
+
+                        }
+                        int remove_seat_number= sc.nextInt();
+
+                        if(cus_info.containsKey(remove_seat_number)){
+                            cus_info.remove(remove_seat_number);
+                        }else{
+                            System.out.println("Incorrect seat number re enter :");
+                            sc.nextInt();
+                        }
+                    }
+                }
             }
         });
       Scene scene = new Scene(anchorPane,500,500);
