@@ -192,6 +192,10 @@ public class Main extends Application {
             book.setLayoutY(700);
             book.setLayoutX(180);
             borderPane.setBottom(book);
+            if (cus_info.containsKey(a)) {
+                button.setStyle("-fx-background-color: red; -fx-text-fill:white");
+            } else {
+
                 button.setOnAction((e) -> {
                     if (button.isSelected()) {
                         button.setStyle("-fx-background-color: red; -fx-text-fill:white");
@@ -235,6 +239,7 @@ public class Main extends Application {
 
 
             }
+        }
 
 
         for (int a = 22; a <= 42; a++) {
@@ -246,51 +251,58 @@ public class Main extends Application {
             book.setLayoutY(700);
             book.setLayoutX(180);
             borderPane.setBottom(book);
-
-            book.setOnAction(e -> {
-                Stage Popup = new Stage();
-
-                //Popup.initModality(Modality.APPLICATION_MODAL);
-                Popup.setTitle("Customer's_Info");
-
-                FlowPane flowPane = new FlowPane();
-
-                TextField name1 = new TextField();
-                Button confirm1 = new Button("confirm");
-                confirm1.setAlignment(Pos.CENTER_RIGHT);
-                flowPane.setHgap(50);
-                flowPane.setVgap(50);
-
-                flowPane.setAlignment(Pos.CENTER);
-                flowPane.getChildren().addAll(confirm1, name1);
+            if (cus_info.containsKey(a)) {
+                button1.setStyle("-fx-background-color: red; -fx-text-fill:white");
+            } else {
 
 
-                confirm1.setOnAction(e1 -> {
-                   for (Integer i: seat_number){
-                       cus_info.put(i, name1.getText());
-                       System.out.println("Thanks for booking" + name1.getText() + i);
-                   }
-                   Popup.close();
+                book.setOnAction(e -> {
+                    Stage Popup = new Stage();
+
+                    //Popup.initModality(Modality.APPLICATION_MODAL);
+                    Popup.setTitle("Customer's_Info");
+
+                    FlowPane flowPane = new FlowPane();
+
+                    TextField name1 = new TextField();
+                    Button confirm1 = new Button("confirm");
+                    confirm1.setAlignment(Pos.CENTER_RIGHT);
+                    flowPane.setHgap(50);
+                    flowPane.setVgap(50);
+
+                    flowPane.setAlignment(Pos.CENTER);
+                    flowPane.getChildren().addAll(confirm1, name1);
+
+
+                    confirm1.setOnAction(e1 -> {
+                        for (Integer i : seat_number) {
+                            cus_info.put(i, name1.getText());
+                            System.out.println("Thanks for booking" + name1.getText() + i);
+                        }
+                        Popup.close();
+                    });
+                    Scene scene2 = new Scene(flowPane, 600, 550);
+                    Popup.setScene(scene2);
+                    Popup.showAndWait();
                 });
-                Scene scene2 = new Scene(flowPane, 600, 550);
-                Popup.setScene(scene2);
-                Popup.showAndWait();
-            });
 
-            button1.setOnAction((e) -> {
-                if (button1.isSelected()) {
-                    button1.setStyle("-fx-background-color: red; -fx-text-fill:white");
-                    seat_number.add(Integer.valueOf(button1.getId()));
-                    System.out.println(seat_number);
-                } else {
-                    seat_number.remove(Integer.valueOf(button1.getId()));
-                    System.out.println(seat_number);
-                }
-            });
+                button1.setOnAction((e) -> {
+                    if (button1.isSelected()) {
+                        button1.setStyle("-fx-background-color: red; -fx-text-fill:white");
+                        seat_number.add(Integer.valueOf(button1.getId()));
+                        System.out.println(seat_number);
+                    } else {
+                        seat_number.remove(Integer.valueOf(button1.getId()));
+                        System.out.println(seat_number);
+                    }
+                });
+            }
+
         }
-        Scene scene = new Scene(borderPane, 200, 750);
-        primaryStage.setScene(scene);
-        primaryStage.showAndWait();
+            Scene scene = new Scene(borderPane, 200, 750);
+            primaryStage.setScene(scene);
+            primaryStage.showAndWait();
+
 
     }
     private void viewAllSeats(HashMap<Integer,String> cus_info) {
@@ -371,7 +383,7 @@ public class Main extends Application {
             left_seats.getChildren().add(button);
             borderPane.setLeft(left_seats);
 
-            if (cus_info.containsValue(Integer.parseInt(button.getId()))) {
+            if (cus_info.containsKey(Integer.parseInt(button.getId()))) {
                 button.setVisible(false);
             }
         }
@@ -380,7 +392,7 @@ public class Main extends Application {
             button1.setId(Integer.toString(i));
             right_seats.getChildren().add(button1);
             borderPane.setRight(right_seats);
-            if (cus_info.containsValue(Integer.parseInt(button1.getId()))) {
+            if (cus_info.containsKey(Integer.parseInt(button1.getId()))) {
                 button1.setVisible(false);
 
             }
@@ -390,15 +402,16 @@ public class Main extends Application {
         primaryStage.showAndWait();
 
     }
-        private void deleteBooking(HashMap<Integer,String> cus_info){
+    private void deleteBooking(HashMap<Integer,String> cus_info){
         Stage primaryStage = new Stage();
-        primaryStage.setTitle("View Empty Seats");
+        primaryStage.setTitle("Delete Seats");
         FlowPane flowPane = new FlowPane();
 
         HBox hBox = new HBox();
+        Label label = new Label("Enter the customer's name:  ");
         TextField name = new TextField();
         Button enter = new Button("Enter");
-        hBox.getChildren().addAll(name,enter);
+        hBox.getChildren().addAll(name,enter,label);
         enter.setOnAction(e ->{
             if(cus_info.containsValue(name.getText())) {
                 cus_info.remove(name.getText());
@@ -464,7 +477,7 @@ public class Main extends Application {
 
         find.setOnAction(e->{
             if(cus_info.containsValue(txt.getText())){
-                System.out.println("You Have Booked Seats" + cus_info.get(txt.getText()));
+                System.out.println("You Have Booked Seats" + cus_info.get(cus_info));
             } else {
                 System.out.println("There are no seats assign to this name");
             }
