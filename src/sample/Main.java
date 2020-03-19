@@ -1,8 +1,6 @@
 package sample;
-
 import java.io.FileInputStream;
 import java.lang.System;
-
 import javafx.application.Application;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
@@ -236,7 +234,7 @@ public class Main extends Application {
                     name.setLayoutX(250);
                     name.setLayoutY(330);
                     Button confirm = new Button("confirm");
-                    // confirm.setAlignment(Pos.CENTER_RIGHT);
+                    confirm.setAlignment(Pos.CENTER_RIGHT);
 
                     if(cus_name.contains(name.getText().toLowerCase())){
                         cus_info.put(Integer.valueOf(button.getId()),name.getText().toLowerCase());
