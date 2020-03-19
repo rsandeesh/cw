@@ -20,7 +20,8 @@ import java.util.HashMap;
 import java.util.Scanner;
 
 public class Main extends Application {
-    int   no_seats = 42;
+    //Initiating the seat capacity as a variable
+    int no_seats = 42;
 
 
     public static void main(String[] args) {
@@ -31,10 +32,11 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
         Scanner sc = new Scanner(System.in);
+        //Creating two hash maps to store customer's details
         HashMap<Integer,String> cus_info_to_colombo = new HashMap<Integer, String>();
         HashMap<Integer,String> cus_info_to_badulla = new HashMap<Integer, String>();
 
-
+        //Creating a while loop to take input from the customer
         while (true) {
             System.out.println("Enter \"A\" to add a customer");
             System.out.println("Enter \"V\" to view all seats");
@@ -43,6 +45,7 @@ public class Main extends Application {
             System.out.println("Enter \"F\"to find a seat by customer's name");
             System.out.println("Enter \"Q\" to exit the program");
             String option = sc.next();
+            //Using the switch case to call the other methods by user's input
             switch (option) {
                 case "A":
                 case "a":
@@ -50,7 +53,7 @@ public class Main extends Application {
                     System.out.println("Enter 2 if your destination is Badulla");
                     System.out.print("Enter your option : ");
                     int user_input = sc.nextInt();
-
+                    //switching between hashmaps according to user's trip
                     if(user_input==1){
                         addcustomer(cus_info_to_colombo);
                     } else if (user_input==2){
@@ -151,16 +154,19 @@ public class Main extends Application {
         }
 
     }
-
+    //creating method to exit from the programme
     private void exit() {
         int i = 0;
         System.exit(i);
     }
+    //creating method to take user's details
     private void addcustomer(HashMap<Integer, String> cus_info) throws FileNotFoundException {
+        //making a temporarily arraylist to store booked seats
         ArrayList<Integer> seat_number = new ArrayList<Integer>();
+        //making a temporarily arraylist to store user's names
         ArrayList<String> cus_name = new ArrayList<String>();
 
-
+        //Creating a prompt to display seats to the user
         Stage primaryStage = new Stage();
         primaryStage.setResizable(false);
         primaryStage.setTitle("Add Customer");
@@ -195,7 +201,7 @@ public class Main extends Application {
             //ignored
         }
 
-
+        //creating a for loop to display seats at the left
         for (int a = 1; a <= 21; a++) {
             ToggleButton button = new ToggleButton("Seat" + a);
             button.setId(Integer.toString(a));
@@ -228,13 +234,36 @@ public class Main extends Application {
                     //Popup.initModality(Modality.APPLICATION_MODAL);
                     Popup.setTitle("Customer's_Info");
 
-                    AnchorPane anchorPane = new AnchorPane();
+                    Pane pane = new Pane();
+                    try {
+                        // create a input stream
+                        FileInputStream input = new FileInputStream("C:\\Users\\user\\Desktop\\bg.jpg");
 
-                    TextField name = new TextField();
-                    name.setLayoutX(250);
-                    name.setLayoutY(330);
+                        // create a image
+                        Image image = new Image(input);
+
+                        // create a background image
+                        BackgroundImage backgroundimage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
+                        // create Background
+                        Background background = new Background(backgroundimage);
+
+
+
+                        // set background
+                        pane.setBackground(background);
+
+                    } catch (Exception ee) {
+                        //ignored
+                    }
+
+                    TextField name = new TextField("Enter the name here");
+                    name.setLayoutX(20);
+                    name.setLayoutY(20);
+
                     Button confirm = new Button("confirm");
-                    confirm.setAlignment(Pos.CENTER_RIGHT);
+
 
                     if(cus_name.contains(name.getText().toLowerCase())){
                         cus_info.put(Integer.valueOf(button.getId()),name.getText().toLowerCase());
@@ -244,7 +273,7 @@ public class Main extends Application {
                     }
 
                     // flowPane.setAlignment(Pos.CENTER);
-                    anchorPane.getChildren().addAll(confirm, name);
+                    pane.getChildren().addAll(confirm, name);
 
 
                     confirm.setOnAction(e1 -> {
@@ -254,7 +283,7 @@ public class Main extends Application {
                         }
                     });
 
-                    Scene scene2 = new Scene(anchorPane, 600, 550);
+                    Scene scene2 = new Scene(pane, 600, 550);
                     Popup.setScene(scene2);
                     Popup.showAndWait();
                 });
@@ -263,8 +292,9 @@ public class Main extends Application {
             }
         }
 
-
+        //creating a for loop to display seats at the left
         for (int a = 22; a <= 42; a++) {
+            //making toggle buttons to select multiple seats
             ToggleButton button1 = new ToggleButton("Seat" + a);
             button1.setId(Integer.toString(a));
             right_seats.getChildren().addAll(button1);
@@ -277,18 +307,19 @@ public class Main extends Application {
                 button1.setStyle("-fx-background-color: red; -fx-text-fill:white");
             } else {
 
-
+                //creating another gui component to book seat by name
                 book.setOnAction(e -> {
                     book.setStyle("-fx-background-color: green; -fx-text-fill:white");
 
                     Stage Popup = new Stage();
 
-                    //Popup.initModality(Modality.APPLICATION_MODAL);
+
                     Popup.setTitle("Customer's_Info");
 
                     FlowPane flowPane = new FlowPane();
-
-                    TextField name1 = new TextField();
+                    //creating a textfield to get user's name
+                    TextField name1 = new TextField("Enter name here");
+                    //creating a button to add details to the hash map
                     Button confirm1 = new Button("confirm");
                     confirm1.setAlignment(Pos.CENTER_RIGHT);
                     flowPane.setHgap(50);
@@ -301,7 +332,8 @@ public class Main extends Application {
                     confirm1.setOnAction(e1 -> {
                         for (Integer i : seat_number) {
                             cus_info.put(i, name1.getText());
-                            System.out.println("Thanks for booking" + name1.getText() + i);
+                            //displaying user the booked seats and the booked name
+                            System.out.println("Thanks for booking  " + name1.getText() + i);
                         }
                         Popup.close();
                     });
@@ -324,15 +356,21 @@ public class Main extends Application {
             }
 
         }
-            Scene scene = new Scene(borderPane, 200, 750);
+            Scene scene = new Scene(borderPane, 180, 740);
             primaryStage.setScene(scene);
             primaryStage.showAndWait();
 
 
     }
-    private void viewAllSeats(HashMap<Integer,String> cus_info) {
+    //creating method to view the seats
+    private void viewAllSeats(HashMap<Integer,String> cus_info)
+    {
+        //creating a gui prompt to display seats
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Seats");
+        primaryStage.setResizable(false);
+
+
 
         VBox left_seats = new VBox();
         left_seats.setSpacing(10);
@@ -343,7 +381,6 @@ public class Main extends Application {
         BorderPane borderPane = new BorderPane();
         borderPane.setLeft(left_seats);
         borderPane.setRight(right_seats);
-
         try {
             // create a input stream
             FileInputStream input = new FileInputStream("C:\\Users\\user\\Desktop\\bg.jpg");
@@ -368,6 +405,8 @@ public class Main extends Application {
         }
 
 
+
+
         for (int a = 1; a <= 21; a++) {
             Button button = new Button("Seat" + a);
             button.setId(Integer.toString(a));
@@ -383,17 +422,18 @@ public class Main extends Application {
         }
 
 
-
-
-        Scene scene = new Scene(borderPane, 200, 750);
+        //creating the scene
+        Scene scene = new Scene(borderPane, 180, 740);
         primaryStage.setScene(scene);
         primaryStage.showAndWait();
 
 
     }
+    //creating a method to show seats that are available
     private void viewEmptySeats(HashMap<Integer,String> cus_info) {
         Stage primaryStage = new Stage();
         primaryStage.setTitle("View Empty Seats");
+        primaryStage.setResizable(false);
         BorderPane borderPane = new BorderPane();
 
         VBox left_seats = new VBox();
@@ -408,6 +448,7 @@ public class Main extends Application {
             left_seats.getChildren().add(button);
             borderPane.setLeft(left_seats);
 
+            //deleting the left seats that are already booked
             if (cus_info.containsKey(Integer.parseInt(button.getId()))) {
                 button.setVisible(false);
             }
@@ -417,33 +458,63 @@ public class Main extends Application {
             button1.setId(Integer.toString(i));
             right_seats.getChildren().add(button1);
             borderPane.setRight(right_seats);
+
+            //deleting the right seats that are already booked
             if (cus_info.containsKey(Integer.parseInt(button1.getId()))) {
                 button1.setVisible(false);
 
             }
+            try {
+                // create a input stream
+                FileInputStream input = new FileInputStream("C:\\Users\\user\\Desktop\\bg.jpg");
+
+                // create a image
+                Image image = new Image(input);
+
+                // create a background image
+                BackgroundImage backgroundimage = new BackgroundImage(image, BackgroundRepeat.NO_REPEAT, BackgroundRepeat.NO_REPEAT,
+                        BackgroundPosition.DEFAULT, BackgroundSize.DEFAULT);
+
+                // create Background
+                Background background = new Background(backgroundimage);
+
+
+
+                // set background
+            borderPane.setBackground(background);
+
+            } catch (Exception e) {
+                //ignored
+            }
         }
-        Scene scene = new Scene(borderPane, 250, 700);
+        Scene scene = new Scene(borderPane, 180, 740);
         primaryStage.setScene(scene);
         primaryStage.showAndWait();
 
     }
+    //creating a method to delete bookings
     private void deleteBooking(HashMap<Integer,String> cus_info){
         Scanner sc = new Scanner(System.in);
+        //making a gui component to take the details that need to be deleted
         Stage primaryStage = new Stage();
         primaryStage.setTitle("Delete Seats");
+        primaryStage.setResizable(false);
         FlowPane flowPane = new FlowPane();
 
         HBox hBox = new HBox();
-        Label label = new Label("Enter the customer's name:  ");
-        TextField name = new TextField();
+        TextField name = new TextField("Enter name here");
         Button enter = new Button("Enter");
-        hBox.getChildren().addAll(name,enter,label);
+        hBox.getChildren().addAll(name,enter);
+        //setting the action that need to be done when enter clicked
         enter.setOnAction(e -> {
+            //if the hashmap empty display a gui component to that seats have not booked yet
                     if (cus_info.isEmpty()) {
                         empty();
                     } else {
+                        //creating a variable by taking text from the textfield
                         String remove_seat_name = name.getText();
                         primaryStage.close();
+                        //removing the name from the hashmap
                         if (!cus_info.containsValue(remove_seat_name)) {
                             System.out.println("No seats booked under the name " + remove_seat_name);
                         } else {
@@ -476,23 +547,26 @@ public class Main extends Application {
                     }
                 });
 
-        flowPane.setHgap(50);
+        flowPane.setHgap(100);
         flowPane.setVgap(50);
 
 
-        flowPane.setAlignment(Pos.CENTER_RIGHT);
+        flowPane.setAlignment(Pos.CENTER);
         flowPane.getChildren().add(hBox);
 
+        //setting up the scene
         Scene scene= new Scene(flowPane,600,550);
         primaryStage.setScene(scene);
         primaryStage.showAndWait();
     }
+    //creating a method to find seat number by name
     private void findSeatByCusName(HashMap<Integer,String> cus_info){
         ArrayList<String> cus_name = new ArrayList<String>(cus_info.values());
         Scanner sc = new Scanner(System.in);
         Stage stage = new Stage();
         stage.setTitle("Find Seat");
-
+        stage.setResizable(false);
+        //creating a gui component to take user's name
         AnchorPane anchorPane=new AnchorPane();
         Label label=new Label("Enter the name here :");
         label.setLayoutY(50);
@@ -501,11 +575,12 @@ public class Main extends Application {
         txt.setLayoutY(100);
         txt.setLayoutX(100);
         Button find= new Button("Find");
-        find.setLayoutX(100);
+        find.setLayoutX(200);
         find.setLayoutY(200);
         anchorPane.getChildren().addAll(label,find,txt);
-
+        //setting the commands to find button by lambada impressions
         find.setOnAction(e->{
+            //if hashmap empty showing the empty method
             if(cus_info.isEmpty()){
                 empty();
             }else{
@@ -524,11 +599,12 @@ public class Main extends Application {
                 }
             }
         });
-        Scene scene = new Scene(anchorPane,500,500);
+        Scene scene = new Scene(anchorPane,300,250);
         stage.setScene(scene);
         stage.showAndWait();
 
     }
+    //Creating a method to sort user's name and the seat number
     private void cusnameAlphabaticallyOrdered(HashMap<Integer,String> cus_info ){
         ArrayList<String> cus_name = new ArrayList<String>(cus_info.values());
         String x;
@@ -553,6 +629,7 @@ public class Main extends Application {
         }
         System.out.println();
     }
+    //creating a gui component to show that seats are deleted successfully
     private void success(){
         Stage stage = new Stage();
         stage.setTitle("Deleted the booking");
@@ -567,21 +644,7 @@ public class Main extends Application {
         stage.setScene(scene);
         stage.showAndWait();
     }
-    private void failed(){
-        Stage stage = new Stage();
-        stage.setTitle("Failed");
-
-        FlowPane flowPane = new FlowPane();
-        flowPane.setOrientation(Orientation.VERTICAL);
-        Label label=new Label("There is no customer by that name");
-        label.setAlignment(Pos.CENTER);
-        flowPane.getChildren().add(label);
-
-        Scene scene = new Scene(flowPane,300,200);
-        stage.setScene(scene);
-        stage.showAndWait();
-    }
-
+    //creating a gui component to show that seats are not yet booked
     private void empty(){
         Stage stage = new Stage();
         stage.setTitle("Still Empty");
